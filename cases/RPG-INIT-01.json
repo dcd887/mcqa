@@ -1,0 +1,54 @@
+{
+ "id": "RPG-INIT-01",
+ "name": "玩家数据初始化完整",
+ "description": "class_system.js 的 initPlayerData 必须把 8 个字段建出来，否则后续逻辑读 undefined",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state",
+   "args": {
+    "state": "$state",
+    "checks": [
+     {
+      "path": "persistentKeys",
+      "op": "contains",
+      "value": "classId"
+     },
+     {
+      "path": "persistentKeys",
+      "op": "contains",
+      "value": "classLevel"
+     },
+     {
+      "path": "persistentKeys",
+      "op": "contains",
+      "value": "skillPoints"
+     },
+     {
+      "path": "persistentKeys",
+      "op": "contains",
+      "value": "attributePoints"
+     },
+     {
+      "path": "persistentKeys",
+      "op": "contains",
+      "value": "advancementCount"
+     },
+     {
+      "path": "fields.classLevel",
+      "op": "min",
+      "value": 0
+     }
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ }
+}

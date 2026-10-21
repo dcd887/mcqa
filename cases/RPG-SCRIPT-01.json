@@ -1,0 +1,24 @@
+{
+ "id": "RPG-SCRIPT-01",
+ "name": "职业与技能树脚本均已加载",
+ "description": "class_system.js / class_ui.js 曾整体未加载",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "Loaded script server_scripts:class_system\\.js",
+    "expect_min": 1
+   }
+  },
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "Loaded script server_scripts:class_ui\\.js",
+    "expect_min": 1
+   }
+  }
+ ]
+}

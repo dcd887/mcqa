@@ -1,0 +1,17 @@
+{
+ "id": "RPG-TICK-01",
+ "name": "无 weapon_system 运行期异常",
+ "description": "防回归：697 行曾每秒抛 LevelKJS 异常",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "weapon_system\\.js\\#",
+    "expect_max": 0
+   }
+  }
+ ]
+}

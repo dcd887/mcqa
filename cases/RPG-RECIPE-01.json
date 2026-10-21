@@ -1,0 +1,17 @@
+{
+ "id": "RPG-RECIPE-01",
+ "name": "配方零解析错误",
+ "description": "5 个配方解析失败 = JEI 查不到、做不出来",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "Error parsing recipe",
+    "expect_max": 0
+   }
+  }
+ ]
+}

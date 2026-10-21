@@ -1,0 +1,24 @@
+{
+ "id": "RPG-LOAD-01",
+ "name": "全部脚本加载成功（无错误）",
+ "description": "防回归：曾 Loaded 4/6 with 2 errors；现在脚本数会变，只断言“有加载统计且 0 错误”",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "Loaded \\d+/\\d+ KubeJS server scripts",
+    "expect_min": 1
+   }
+  },
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "with [1-9]\\d* errors",
+    "expect_max": 0
+   }
+  }
+ ]
+}

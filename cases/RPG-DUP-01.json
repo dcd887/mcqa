@@ -1,0 +1,17 @@
+{
+ "id": "RPG-DUP-01",
+ "name": "无重复全局声明",
+ "description": "防回归：ADVANCEMENT_MAP / STAT_NAMES 曾重复声明",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "redeclaration of (const|var|let)",
+    "expect_max": 0
+   }
+  }
+ ]
+}

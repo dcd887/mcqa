@@ -1,0 +1,21 @@
+{
+ "id": "RPG-LOOT-01",
+ "name": "数据层无解析错误",
+ "description": "loot_tables / 配方等解析失败 = 结构箱子空、奖励错乱",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_clean",
+   "args": {
+    "max_hits": 0,
+    "sample": 5,
+    "only": "error"
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 120
+ }
+}

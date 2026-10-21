@@ -1,0 +1,32 @@
+{
+ "id": "RPG-REG-01",
+ "name": "自定义物品全部注册成功",
+ "description": "register_items.js 注册的 kubejs:* 物品若缺失，技能/装备/任务会静默失败",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "items_registered",
+   "args": {
+    "state": "$state",
+    "allow_missing": [
+     "kubejs:ranger_shortsword_ad",
+     "kubejs:ranger_shortsword_as",
+     "kubejs:warrior_battleaxe_ad",
+     "kubejs:warrior_battleaxe_as",
+     "kubejs:warrior_greatsword_ad",
+     "kubejs:warrior_greatsword_as",
+     "kubejs:warrior_spear_ad",
+     "kubejs:warrior_spear_as"
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ }
+}

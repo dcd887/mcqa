@@ -1,0 +1,17 @@
+{
+ "id": "RPG-LOOT-02",
+ "name": "掉落表零解析错误",
+ "description": "5 个掉落表解析失败 = 结构箱子空",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "Couldn't parse element loot_tables",
+    "expect_max": 0
+   }
+  }
+ ]
+}

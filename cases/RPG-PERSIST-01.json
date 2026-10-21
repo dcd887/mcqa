@@ -1,0 +1,29 @@
+{
+ "id": "RPG-PERSIST-01",
+ "name": "死亡/跨维度后职业数据仍存在（需驱动层）",
+ "description": "已手工实测两次：本包死亡后 persistentData 顶层不丢，缺陷 5 撤销。此用例保留为标准化的回归位，等驱动层接入后自动跑",
+ "requires": {
+  "driver": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state",
+   "args": {
+    "state": "$state",
+    "checks": [
+     {
+      "path": "fields.classId",
+      "op": "exists"
+     }
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 120
+ },
+ "note": "手工结论：补丁开/关两种配置下死亡均不丢数据"
+}

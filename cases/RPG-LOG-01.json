@@ -1,0 +1,21 @@
+{
+ "id": "RPG-LOG-01",
+ "name": "运行期无 KubeJS 脚本异常",
+ "description": "自定义脚本每 tick 抛异常会同时毁性能与状态",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_clean",
+   "args": {
+    "max_hits": 0,
+    "sample": 3,
+    "only": "script"
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 120
+ }
+}

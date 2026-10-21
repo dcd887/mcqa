@@ -1,0 +1,30 @@
+{
+ "id": "RPG-ASSET-01",
+ "name": "武器未被吞（storedWeapon 与背包一致）",
+ "description": "T8 #2/#3：小精灵消失时武器进 storedWeapon，若 onLogin 归还失败则武器永久丢失",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state",
+   "args": {
+    "state": "$state",
+    "checks": [
+     {
+      "path": "storedWeaponRaw",
+      "op": "equals",
+      "value": null
+     }
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ },
+ "note": "storedWeaponRaw 非空 = 有武器处于暂存态，需人工确认是否已归还"
+}

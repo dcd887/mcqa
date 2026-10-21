@@ -1,0 +1,46 @@
+{
+ "id": "RPG-STATE-01",
+ "name": "游戏内状态可导出",
+ "description": "qa_probe.js 能读到玩家 NBT / 阶段 / 物品注册情况（探针自检）",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state",
+   "args": {
+    "state": "$state",
+    "checks": [
+     {
+      "path": "schema",
+      "op": "min",
+      "value": 6
+     },
+     {
+      "path": "player.name",
+      "op": "truthy"
+     },
+     {
+      "path": "fields.classId",
+      "op": "exists"
+     },
+     {
+      "path": "persistentKeys",
+      "op": "truthy"
+     },
+     {
+      "path": "items.probed",
+      "op": "min",
+      "value": 40
+     }
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 120
+ }
+}

@@ -1,0 +1,20 @@
+{
+ "id": "RPG-FRESH-01",
+ "name": "状态新鲜度",
+ "description": "探针数据超过 60 分钟则判定可能失效（防陈旧数据悄悄通过）",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state_fresh",
+   "args": {
+    "state": "$state",
+    "max_age_minutes": 60
+   }
+  }
+ ]
+}

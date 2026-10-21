@@ -1,0 +1,24 @@
+{
+ "id": "RPG-PROBE-01",
+ "name": "探针分块完整",
+ "description": "[QA] begin 与 end 成对，否则状态会残缺",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "\\[QA\\] begin",
+    "expect_min": 1
+   }
+  },
+  {
+   "type": "log_match",
+   "args": {
+    "pattern": "\\[QA\\] end",
+    "expect_min": 1
+   }
+  }
+ ]
+}

@@ -1,0 +1,308 @@
+{
+ "when": "2026-10-20T17:07:51",
+ "game_dir": "C:\\Users\\kjds\\Desktop\\.minecraft\\versions\\RPG奇幻整合包",
+ "results": [
+  {
+   "status": "PASS",
+   "case": "RPG-ASSET-01",
+   "name": "武器未被吞（storedWeapon 与背包一致）",
+   "description": "T8 #2/#3：小精灵消失时武器进 storedWeapon，若 onLogin 归还失败则武器永久丢失",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 1
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-CLASS-01",
+   "name": "职业状态自洽（不变量）",
+   "description": "classId/advancementCount/阶段三者必须互相对得上；对不上说明转职逻辑写出了撕裂状态",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "class_invariants",
+     "passed": true,
+     "detail": {
+      "classId": "(空)",
+      "advancementCount": 0,
+      "stages": 0
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-CRASH-01",
+   "name": "启动无致命错误",
+   "description": "启动期不应出现 FATAL / crash-report",
+   "passed": true,
+   "seconds": 1.09,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": true,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 139987,
+       "error": 127,
+       "noise_ignored": 41
+      },
+      "samples": []
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-ECON-01",
+   "name": "任务币字段可读且非负",
+   "description": "economy.js 用 questCoins 做货币；读不到说明存储被覆盖或初始化缺失",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 2
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-INIT-01",
+   "name": "玩家数据初始化完整",
+   "description": "class_system.js 的 initPlayerData 必须把 8 个字段建出来，否则后续逻辑读 undefined",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 6
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-LOG-01",
+   "name": "运行期无 KubeJS 脚本异常",
+   "description": "自定义脚本每 tick 抛异常会同时毁性能与状态",
+   "passed": false,
+   "seconds": 1.16,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": false,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 140083,
+       "error": 127,
+       "noise_ignored": 41
+      },
+      "samples": [
+       {
+        "line": 1274,
+        "level": "ERROR",
+        "logger": "KubeJS Server/",
+        "msg": "TypeError: TypeError: redeclaration of const ADVANCEMENT_MAP."
+       },
+       {
+        "line": 1275,
+        "level": "ERROR",
+        "logger": "KubeJS Server/",
+        "msg": "TypeError: TypeError: redeclaration of const STAT_NAMES."
+       },
+       {
+        "line": 2524,
+        "level": "ERROR",
+        "logger": "KubeJS Server/",
+        "msg": "weapon_system.js#697: Error in 'PlayerEvents.tick': Can't find method dev.latvian.mods.kubejs.core.LevelKJS.kjs$getEntitiesWithin(net.minecraft.server.level.ServerPlayer,number)."
+       }
+      ],
+      "kind": "SCRIPT_ERROR",
+      "allow_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [
+    "SCRIPT_ERROR"
+   ],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-LOOT-01",
+   "name": "数据层无解析错误",
+   "description": "loot_tables / 配方等解析失败 = 结构箱子空、奖励错乱",
+   "passed": false,
+   "seconds": 1.53,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": false,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 140131,
+       "error": 127,
+       "noise_ignored": 41
+      },
+      "samples": [
+       {
+        "line": 1086,
+        "level": "ERROR",
+        "logger": "placebo/",
+        "msg": "Exception loading patreon trails data!"
+       },
+       {
+        "line": 1290,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:irons_spellbooks:chests/catacombs/crypt_loot"
+       },
+       {
+        "line": 1339,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:goety_revelation:inject/chests/goety_revelation/church_food"
+       },
+       {
+        "line": 1397,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:keegsweapons:inject/chests/ancient_city"
+       },
+       {
+        "line": 1433,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:irons_spellbooks:chests/citadel/citadel_tomes"
+       }
+      ],
+      "kind": "SCRIPT_ERROR",
+      "allow_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [
+    "SCRIPT_ERROR"
+   ],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-PERSIST-01",
+   "name": "职业数据放在可持久子标签里",
+   "description": "Forge 只保留 persistentData.PlayerPersisted；顶层键在死亡/跨维度会丢",
+   "passed": false,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": false,
+     "detail": {
+      "failed": [
+       {
+        "path": "persistentData.PlayerPersisted",
+        "op": "exists",
+        "want": null,
+        "got": null
+       }
+      ],
+      "kind": "SCRIPT_ERROR",
+      "probe_errors": []
+     }
+    }
+   ],
+   "failure_kinds": [
+    "SCRIPT_ERROR"
+   ],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-REG-01",
+   "name": "自定义物品全部注册成功",
+   "description": "register_items.js 注册的 kubejs:* 物品若缺失，技能/装备/任务会静默失败",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "items_registered",
+     "passed": true,
+     "detail": {
+      "checked": 60
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-STATE-01",
+   "name": "游戏内状态可导出",
+   "description": "qa_probe.js 能读到玩家 NBT / 阶段 / 物品注册情况（探针自检）",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 5
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 120
+   }
+  }
+ ],
+ "total": 10,
+ "passed": 7,
+ "pending": 0
+}

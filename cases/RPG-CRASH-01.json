@@ -1,0 +1,21 @@
+{
+ "id": "RPG-CRASH-01",
+ "name": "启动无致命错误",
+ "description": "启动期不应出现 FATAL / crash-report",
+ "ctx": {
+  "log": true
+ },
+ "asserts": [
+  {
+   "type": "log_clean",
+   "args": {
+    "max_hits": 0,
+    "sample": 3,
+    "only": "fatal"
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ }
+}

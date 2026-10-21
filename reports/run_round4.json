@@ -1,0 +1,490 @@
+{
+ "when": "2026-10-21T15:49:35",
+ "game_dir": "C:\\Users\\kjds\\Desktop\\.minecraft\\versions\\RPG奇幻整合包",
+ "results": [
+  {
+   "status": "PASS",
+   "case": "RPG-ASSET-01",
+   "name": "武器未被吞（storedWeapon 与背包一致）",
+   "description": "T8 #2/#3：小精灵消失时武器进 storedWeapon，若 onLogin 归还失败则武器永久丢失",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 1
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-CLASS-01",
+   "name": "职业状态自洽（不变量）",
+   "description": "classId/advancementCount/阶段三者必须互相对得上；对不上说明转职逻辑写出了撕裂状态",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "class_invariants",
+     "passed": true,
+     "detail": {
+      "classId": "mage",
+      "advancementCount": 0,
+      "stages": 2
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-CRASH-01",
+   "name": "启动无致命错误",
+   "description": "启动期不应出现 FATAL / crash-report",
+   "passed": true,
+   "seconds": 0.02,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": true,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 0,
+       "error": 22,
+       "noise_ignored": 0
+      },
+      "samples": []
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-DUP-01",
+   "name": "无重复全局声明",
+   "description": "防回归：ADVANCEMENT_MAP / STAT_NAMES 曾重复声明",
+   "passed": true,
+   "seconds": 0.01,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "redeclaration of (const|var|let)",
+      "hits": 0,
+      "expect_min": null,
+      "expect_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-ECON-01",
+   "name": "任务币字段可读且非负",
+   "description": "economy.js 用 questCoins 做货币；读不到说明存储被覆盖或初始化缺失",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 2
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-FRESH-01",
+   "name": "状态新鲜度",
+   "description": "探针数据超过 60 分钟则判定可能失效（防陈旧数据悄悄通过）",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state_fresh",
+     "passed": true,
+     "detail": {
+      "when": "2026-10-21T07:48:16.767Z",
+      "age_minutes": 1.31,
+      "max_age_minutes": 60
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-INIT-01",
+   "name": "玩家数据初始化完整",
+   "description": "class_system.js 的 initPlayerData 必须把 8 个字段建出来，否则后续逻辑读 undefined",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 6
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-LOAD-01",
+   "name": "全部脚本加载成功（无错误）",
+   "description": "防回归：曾 Loaded 4/6 with 2 errors；现在脚本数会变，只断言“有加载统计且 0 错误”",
+   "passed": true,
+   "seconds": 0.03,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "Loaded \\d+/\\d+ KubeJS server scripts",
+      "hits": 1,
+      "expect_min": 1,
+      "expect_max": null
+     }
+    },
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "with [1-9]\\d* errors",
+      "hits": 0,
+      "expect_min": null,
+      "expect_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-LOG-01",
+   "name": "运行期无 KubeJS 脚本异常",
+   "description": "自定义脚本每 tick 抛异常会同时毁性能与状态",
+   "passed": true,
+   "seconds": 0.02,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": true,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 0,
+       "error": 22,
+       "noise_ignored": 0
+      },
+      "samples": []
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-LOOT-01",
+   "name": "数据层无解析错误",
+   "description": "loot_tables / 配方等解析失败 = 结构箱子空、奖励错乱",
+   "passed": false,
+   "seconds": 0.02,
+   "asserts": [
+    {
+     "type": "log_clean",
+     "passed": false,
+     "detail": {
+      "counts": {
+       "fatal": 0,
+       "script": 0,
+       "error": 22,
+       "noise_ignored": 0
+      },
+      "samples": [
+       {
+        "line": 16,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:irons_spellbooks:chests/catacombs/crypt_loot"
+       },
+       {
+        "line": 65,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:goety_revelation:inject/chests/goety_revelation/church_food"
+       },
+       {
+        "line": 121,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:keegsweapons:inject/chests/ancient_city"
+       },
+       {
+        "line": 157,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:irons_spellbooks:chests/citadel/citadel_tomes"
+       },
+       {
+        "line": 214,
+        "level": "ERROR",
+        "logger": "net.minecraftforge.common.ForgeHooks/",
+        "msg": "Couldn't parse element loot_tables:goety_revelation:inject/chests/goety_revelation/church_food_2"
+       }
+      ],
+      "kind": "LOG_ERROR",
+      "allow_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [
+    "LOG_ERROR"
+   ],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-LOOT-02",
+   "name": "掉落表零解析错误",
+   "description": "5 个掉落表解析失败 = 结构箱子空",
+   "passed": false,
+   "seconds": 0.02,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": false,
+     "detail": {
+      "pattern": "Couldn't parse element loot_tables",
+      "hits": 5,
+      "expect_min": null,
+      "expect_max": 0,
+      "kind": "SCRIPT_ERROR",
+      "samples": [
+       "[2110月2026 15:47:45.872] [Worker-ResourceReload-43/ERROR] [net.minecraftforge.common.ForgeHooks/]: Couldn't parse element loot_tables:irons_spellbooks:chests/catacombs/crypt_loot",
+       "[2110月2026 15:47:45.879] [Worker-ResourceReload-43/ERROR] [net.minecraftforge.common.ForgeHooks/]: Couldn't parse element loot_tables:goety_revelation:inject/chests/goety_revelation/church_food",
+       "[2110月2026 15:47:46.296] [Worker-ResourceReload-43/ERROR] [net.minecraftforge.common.ForgeHooks/]: Couldn't parse element loot_tables:keegsweapons:inject/chests/ancient_city",
+       "[2110月2026 15:47:46.576] [Worker-ResourceReload-43/ERROR] [net.minecraftforge.common.ForgeHooks/]: Couldn't parse element loot_tables:irons_spellbooks:chests/citadel/citadel_tomes"
+      ]
+     }
+    }
+   ],
+   "failure_kinds": [
+    "SCRIPT_ERROR"
+   ],
+   "budget": null
+  },
+  {
+   "case": "RPG-PERSIST-01",
+   "name": "死亡/跨维度后职业数据仍存在（需驱动层）",
+   "description": "已手工实测两次：本包死亡后 persistentData 顶层不丢，缺陷 5 撤销。此用例保留为标准化的回归位，等驱动层接入后自动跑",
+   "passed": null,
+   "status": "PENDING",
+   "reason": "需要输入驱动层（当前测试对象上不可用，见阻塞记录）",
+   "seconds": 0.0,
+   "asserts": [],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-PROBE-01",
+   "name": "探针分块完整",
+   "description": "[QA] begin 与 end 成对，否则状态会残缺",
+   "passed": true,
+   "seconds": 0.03,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "\\[QA\\] begin",
+      "hits": 3,
+      "expect_min": 1,
+      "expect_max": null
+     }
+    },
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "\\[QA\\] end",
+      "hits": 3,
+      "expect_min": 1,
+      "expect_max": null
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  },
+  {
+   "status": "FAIL",
+   "case": "RPG-RECIPE-01",
+   "name": "配方零解析错误",
+   "description": "5 个配方解析失败 = JEI 查不到、做不出来",
+   "passed": false,
+   "seconds": 0.02,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": false,
+     "detail": {
+      "pattern": "Error parsing recipe",
+      "hits": 5,
+      "expect_min": null,
+      "expect_max": 0,
+      "kind": "SCRIPT_ERROR",
+      "samples": [
+       "[2110月2026 15:47:46.754] [KubeJS Recipe Event Worker 0/WARN] [KubeJS Server/]: Error parsing recipe forbidden_arcanus:aurum_chest_boat[minecraft:crafting_shapeless]: {\"type\":\"minecraft:crafting_shapel",
+       "[2110月2026 15:47:46.758] [KubeJS Recipe Event Worker 0/WARN] [KubeJS Server/]: Error parsing recipe goety_revelation:ice_focus_el[goety:ritual]: {\"type\":\"goety:ritual\",\"ritual_type\":\"goety:craft\",\"act",
+       "[2110月2026 15:47:46.754] [KubeJS Recipe Event Worker 0/WARN] [KubeJS Server/]: Error parsing recipe forbidden_arcanus:edelwood_chest_boat[minecraft:crafting_shapeless]: {\"type\":\"minecraft:crafting_sha",
+       "[2110月2026 15:47:46.760] [KubeJS Recipe Event Worker 0/WARN] [KubeJS Server/]: Error parsing recipe goety_revelation:frostbloom_staff_el[goety:ritual]: {\"type\":\"goety:ritual\",\"ritual_type\":\"goety:craf"
+      ]
+     }
+    }
+   ],
+   "failure_kinds": [
+    "SCRIPT_ERROR"
+   ],
+   "budget": null
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-REG-01",
+   "name": "自定义物品全部注册成功",
+   "description": "register_items.js 注册的 kubejs:* 物品若缺失，技能/装备/任务会静默失败",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "items_registered",
+     "passed": true,
+     "detail": {
+      "checked": 52
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 60
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-SCRIPT-01",
+   "name": "职业与技能树脚本均已加载",
+   "description": "class_system.js / class_ui.js 曾整体未加载",
+   "passed": true,
+   "seconds": 0.03,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "Loaded script server_scripts:class_system\\.js",
+      "hits": 1,
+      "expect_min": 1,
+      "expect_max": null
+     }
+    },
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "Loaded script server_scripts:class_ui\\.js",
+      "hits": 1,
+      "expect_min": 1,
+      "expect_max": null
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-STATE-01",
+   "name": "游戏内状态可导出",
+   "description": "qa_probe.js 能读到玩家 NBT / 阶段 / 物品注册情况（探针自检）",
+   "passed": true,
+   "seconds": 0.0,
+   "asserts": [
+    {
+     "type": "state",
+     "passed": true,
+     "detail": {
+      "checks": 5
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": {
+    "max_seconds": 120
+   }
+  },
+  {
+   "status": "PASS",
+   "case": "RPG-TICK-01",
+   "name": "无 weapon_system 运行期异常",
+   "description": "防回归：697 行曾每秒抛 LevelKJS 异常",
+   "passed": true,
+   "seconds": 0.01,
+   "asserts": [
+    {
+     "type": "log_match",
+     "passed": true,
+     "detail": {
+      "pattern": "weapon_system\\.js\\#",
+      "hits": 0,
+      "expect_min": null,
+      "expect_max": 0
+     }
+    }
+   ],
+   "failure_kinds": [],
+   "budget": null
+  }
+ ],
+ "total": 18,
+ "passed": 14,
+ "pending": 1
+}

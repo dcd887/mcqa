@@ -1,0 +1,33 @@
+{
+ "id": "RPG-ECON-01",
+ "name": "任务币字段可读且非负",
+ "description": "economy.js 用 questCoins 做货币；读不到说明存储被覆盖或初始化缺失",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "state",
+   "args": {
+    "state": "$state",
+    "checks": [
+     {
+      "path": "fields.questCoins",
+      "op": "min",
+      "value": 0
+     },
+     {
+      "path": "stages",
+      "op": "exists"
+     }
+    ]
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ }
+}

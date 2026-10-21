@@ -1,0 +1,22 @@
+{
+ "id": "RPG-CLASS-01",
+ "name": "职业状态自洽（不变量）",
+ "description": "classId/advancementCount/阶段三者必须互相对得上；对不上说明转职逻辑写出了撕裂状态",
+ "requires": {
+  "state": true
+ },
+ "ctx": {
+  "state": true
+ },
+ "asserts": [
+  {
+   "type": "class_invariants",
+   "args": {
+    "state": "$state"
+   }
+  }
+ ],
+ "budget": {
+  "max_seconds": 60
+ }
+}
