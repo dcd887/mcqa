@@ -102,6 +102,22 @@ NOISE_RULES = [
     (re.compile(r"Failed to retrieve profile key pair"), "offline-profile"),
     (re.compile(r"Exception loading patreon wing data"), "cosmetic"),
     (re.compile(r"Couldn't find .* on the client"), "client-only-compat"),
+    # —— 以下 4 条按 2026-10-24 RPG 整合包实测加入，每条都注明"为什么不算失败" ——
+    # ① CosmeticLoader 的 trails / wing 是两个独立加载器，上面只覆盖了 wing
+    (re.compile(r"Exception loading patreon trails data"), "cosmetic"),
+    # ② brutalbosses 用了更高的属性名（generic.jump_strength），1.20.1 认不出 →
+    #    该 boss 少一项属性，不影响本框架任何不变量；属上游 mod 缺陷
+    (re.compile(r"Bad attribute id:"), "mod-compat"),
+    # ③ Embeddium 的 mixin 污染检测是信息性告警（"This instance is now tainted"），不是错误
+    #    注意：NOISE_RULES 匹配的是 msg 而不是 logger 名，所以这里写消息体原文
+    (re.compile(r"Mod mixin into Embeddium internals detected"), "info-notice"),
+    # ④ JEI 的"注册耗时"提示，属性能告警
+    (re.compile(r"Registering recipes: .* is running an"), "perf-warning"),
+    # ⑤ Xaero 地图的联网版本检查（Read timed out）
+    (re.compile(r"io exception while checking versions"), "network-probe"),
+    # ⑥ JEI 渲染不了某条自定义配方（apotheosis:socketing / jeresources MobWrapper）——
+    #    是"查看器"层的布局失败，不是配方 JSON 解析失败；配方解析错由 RPG-RECIPE-01 单独守
+    (re.compile(r"Found a broken recipe, failed to setRecipe with RecipeLayoutBuilder"), "viewer-incompat"),
 ]
 
 
