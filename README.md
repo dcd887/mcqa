@@ -17,18 +17,23 @@ python -m mcqa.runner run cases/ --out reports/run.json --md
 - `--md` 同时生成 Markdown 报告（reports/run.md）
 - `python -m mcqa.runner compare reports/run_round5.json reports/run_round6.json` 可对比两轮结果
 
-## 最新一轮结果（reports/run_round6，2026-10-21）
+## 最新一轮结果（reports/run_fixed，2026-10-24）
 
-**18 个用例：14 通过 / 3 失败 / 1 待定**。逐条结论都写在报告里，失败不藏：
+**18 个用例：17 通过 / 0 失败 / 1 待定**。逐条结论都写在报告里，失败不藏。
 
-| 用例 | 结果 | 原因（来自 reports/ 的真实日志） |
-|---|---|---|
-| RPG-LOOT-01 数据层无解析错误 | FAIL | 日志里 20 条 `ERROR`：ForgeHooks 解析不了第三方模组的注入掉落表（goety_revelation / keegsweapons / irons_spellbooks 的 chest 注入）——是模组数据包的问题，不是本框架误报 |
-| RPG-LOOT-02 掉落表零解析错误 | FAIL | 同源：`Couldn't parse element loot_tables` 命中 4 处，上限设 0 所以判 FAIL |
-| RPG-RECIPE-01 配方零解析错误 | FAIL | `Error parsing recipe` 命中 3 处（goety:ritual 仪式配方等）→ JEI 查不到、做不出来 |
-| RPG-PERSIST-01 死亡后职业数据仍存在 | PENDING | 需要游戏内驱动层才能自动判定；已手工实测两次（persistentData 顶层不丢），等驱动层接入转正 |
+修前是 13 通过 / 4 失败 / 1 待定，4 条失败全部定位并修掉：
 
-> **重跑注意**：你现在跑大概率得到 **13/18**，比上表少 RPG-FRESH-01。这不是退化——FRESH-01 是新鲜度元测试，探针快照（latest.log）超过 60 分钟就会判失效，防止拿陈旧数据假装全过。要复现 14/18，用 run_round6 同期的日志快照跑即可。
+| 用例 | 修前 | 现在 | 原因与修法（来自 reports/ 与 latest.log 的真实日志） |
+|---|---|---|---|
+| RPG-FRESH-01 状态新鲜度 | FAIL | PASS | 探针快照超 60 分钟即判失效，属**设计行为**；进一次世界让 `qa_probe.js` 重写状态即可 |
+| RPG-LOOT-02 掉落表零解析错误 | FAIL（4 处） | PASS（0） | 4 张掉落表引用了**未安装**的 mod 物品（farmersdelight / nethersdelight）+ 1 个 pool 缺 `entries` + 用了 1.20.5+ 才有的 `set_written_book_pages`；用 `kubejs/data` 同名覆盖修好 |
+| RPG-RECIPE-01 配方零解析错误 | FAIL（3 处） | PASS（0） | 3 个配方引用缺席的 enigmaticaddons / enigmaticlegacy；其中 `blessing_scroll` 的结果物品本身也没注册 |
+| RPG-LOOT-01 数据层无解析错误 | FAIL（20 条 ERROR） | PASS（0，噪声 15） | 9 条是第三方 mod 的**进度 JSON**（`display.icon` 用了 1.20.5+ 的 `id` 写法、malum 三个空壳文件）；其余 6 类为网络检查 / JEI 渲染不兼容等噪声，已进 `NOISE_RULES` 且逐条注明了理由 |
+| RPG-PERSIST-01 死亡后职业数据仍存在 | PENDING | PENDING | 需要游戏内驱动层才能自动判定；已手工实测两次（persistentData 顶层不丢）。DebugBridge 只有 Fabric 版、Forge 装不进，故长期 PENDING |
+
+> **重跑注意**：FRESH-01 是新鲜度元测试，探针快照（latest.log）超过 60 分钟就会判失效——这是防止拿陈旧数据假装全过的设计，不是退化。复跑前先让游戏进一次世界。
+>
+> **噪声白名单的口径**：`NOISE_RULES` 匹配的是日志 **msg**，不是 logger 名（写 logger 名的正则永远不生效）。每条规则都写了"为什么不算失败"，不放宽到能藏住真实数据错误——配方/掉落表的解析错由 LOOT-02 与 RECIPE-01 单独守。
 
 ## 架构三层
 
